@@ -11,6 +11,10 @@ import javax.swing.ImageIcon;
 import java.awt.Color;
 import javax.swing.JTextField;
 import com.toedter.calendar.JDateChooser;
+
+import conection.controller.ReservaController;
+import conection.modelos.Reserva;
+
 import java.awt.Font;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
@@ -37,7 +41,7 @@ public class ReservasView extends JFrame {
 	int xMouse, yMouse;
 	private JLabel labelExit;
 	private JLabel labelAtras;
-
+	private ReservaController reservaController;
 	/**
 	 * Launch the application.
 	 */
@@ -59,6 +63,8 @@ public class ReservasView extends JFrame {
 	 */
 	public ReservasView() {
 		super("Reserva");
+		reservaController=new ReservaController();
+
 		setIconImage(Toolkit.getDefaultToolkit().getImage(ReservasView.class.getResource("/imagenes/aH-40px.png")));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 910, 560);
@@ -297,8 +303,14 @@ public class ReservasView extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if (ReservasView.txtFechaEntrada.getDate() != null && ReservasView.txtFechaSalida.getDate() != null) {		
-					RegistroHuesped registro = new RegistroHuesped();
+					
+					Integer numeroReserva=reservar();
+					
+					/*JOptionPane.showMessageDialog(null, reserva);*/
+					
+					RegistroHuesped registro = new RegistroHuesped(numeroReserva);
 					registro.setVisible(true);
+
 				} else {
 					JOptionPane.showMessageDialog(null, "Debes llenar todos los campos.");
 				}
@@ -313,6 +325,13 @@ public class ReservasView extends JFrame {
 
 	}
 		
+	protected Integer reservar() {
+		
+		 
+		this.reservaController.reservar(new Reserva( new java.sql.Date(txtFechaEntrada.getDate().getTime()), new java.sql.Date(txtFechaSalida.getDate().getTime()),0.2,txtFormaPago.getSelectedItem().toString()));
+		return 1;
+	}
+
 	//Código que permite mover la ventana por la pantalla según la posición de "x" y "y"	
 	 private void headerMousePressed(java.awt.event.MouseEvent evt) {
 	        xMouse = evt.getX();

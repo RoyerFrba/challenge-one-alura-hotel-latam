@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<persistence version="2.2"
+	    xmlns="http://xmlns.jcp.org/xml/ns/persistence"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_2.xsd">
+
+	<persistence-unit name="comercio" transaction-type="RESOURCE_LOCAL">
+	<!--OPCCIONAL si se usa hibernet , si no se implementa para todas las clases-->
+
+		<properties>
+			<!--Necesitamos un DRIVER que nos permita realizar la conexión con la base de datos.-->
+			<!--<property name="javax.persistence.jdbc.driver" value="org.h2.Driver"/>-->
+			<property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver" />
+			<!--La url le indica a la api DONDE se encuentra almacenada la base de datos.-->
+			<!--<property name="javax.persistence.jdbc.url" value="jdbc:h2:mem:tienda"/>-->
+			<!--<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/comercio" />-->	
+			<property name="hibernate.connection.url" value="jdbc:mysql://localhost/comercio?serverTimezone=UTC" />
+			<property name="javax.persistence.jdbc.user" value="root"/>
+	   	 	<property name="javax.persistence.jdbc.password" value="742698135"/>
+	    
+	    
+	    
+	  	 	<!--Cada DBMS tien su propio dialecto especifico-->
+			<!--<property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect"/>-->
+			<property name="hibernet.show_sql" value="true" />
+			<property name="hibernet.format_sql" value="true" />
+			<!--<property name="hibernate.hbm2ddl.auto" value="update"/>-->
+			<property name="hibernate.hbm2ddl.auto" value="create-drop"/>
+			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQL8Dialect"/>
+
+		</properties>
+    </persistence-unit>
+</persistence>

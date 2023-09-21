@@ -4,6 +4,10 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import conection.controller.UserController;
+import conection.modelos.User;
+
 import java.awt.Color;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -29,6 +33,7 @@ public class Login extends JFrame {
 	private JPasswordField txtContrasena;
 	int xMouse, yMouse;
 	private JLabel labelExit;
+	private UserController userController;
 
 	/**
 	 * Launch the application.
@@ -49,7 +54,7 @@ public class Login extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Login() {
+	public Login() {	
 		setResizable(false);
 		setUndecorated(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -235,13 +240,16 @@ public class Login extends JFrame {
 	}
 	
 	private void Login() {
-		 String Usuario= "admin";
-	     String Contraseña="admin";
+		//Modificar---------------------------------------------------------------------------------+
+		userController=new UserController();
+		 String user= txtUsuario.getText();
+	     String password=new String(txtContrasena.getPassword());
+	     
+//	        String contrase=new String (txtContrasena.getPassword());
+//	        if(txtUsuario.getText().equals(Usuario) && contrase.equals(Contraseña)){
+	        if(userController.login(new User(user,password))){
 
-	        String contrase=new String (txtContrasena.getPassword());
-
-	        if(txtUsuario.getText().equals(Usuario) && contrase.equals(Contraseña)){
-	            MenuUsuario menu = new MenuUsuario();
+	        	MenuUsuario menu = new MenuUsuario();
 	            menu.setVisible(true);
 	            dispose();	 
 	        }else {

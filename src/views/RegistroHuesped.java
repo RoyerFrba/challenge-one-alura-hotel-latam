@@ -7,6 +7,12 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.JTextField;
 import java.awt.Color;
 import com.toedter.calendar.JDateChooser;
+
+import conection.controller.HuespedController;
+import conection.controller.ReservaController;
+import conection.modelos.Huesped;
+import conection.modelos.Reserva;
+
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JLabel;
@@ -20,6 +26,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.text.Format;
+import java.util.Date;
 import java.awt.event.ActionEvent;
 import java.awt.Toolkit;
 import javax.swing.SwingConstants;
@@ -37,6 +44,8 @@ public class RegistroHuesped extends JFrame {
 	private JComboBox<Format> txtNacionalidad;
 	private JLabel labelExit;
 	private JLabel labelAtras;
+	private HuespedController huespedController;
+	private ReservaController reservaController;
 	int xMouse, yMouse;
 
 	/**
@@ -46,7 +55,7 @@ public class RegistroHuesped extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					RegistroHuesped frame = new RegistroHuesped();
+					RegistroHuesped frame = new RegistroHuesped(null);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -57,8 +66,11 @@ public class RegistroHuesped extends JFrame {
 
 	/**
 	 * Create the frame.
+	 * @param numeroReserva 
 	 */
-	public RegistroHuesped() {
+	public RegistroHuesped(Integer numeroReserva) {
+		huespedController= new HuespedController();
+		reservaController=new ReservaController();
 		
 		setIconImage(Toolkit.getDefaultToolkit().getImage(RegistroHuesped.class.getResource("/imagenes/lOGO-50PX.png")));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -205,6 +217,13 @@ public class RegistroHuesped extends JFrame {
 		contentPane.add(lblNumeroReserva);
 		
 		txtNreserva = new JTextField();
+		if(numeroReserva!=null) 
+		{
+			txtNreserva.setText(numeroReserva.toString());
+			
+		}else	txtNreserva.setText("");
+
+		txtNreserva.setEditable(false);
 		txtNreserva.setFont(new Font("Roboto", Font.PLAIN, 16));
 		txtNreserva.setBounds(560, 495, 285, 33);
 		txtNreserva.setColumns(10);
@@ -253,6 +272,9 @@ public class RegistroHuesped extends JFrame {
 		btnguardar.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				//Funcion registrar huesped----------------------------------------------------+
+				//Reserva reserva=reservaController.getReserva();
+				guardar();				
 			}
 		});
 		btnguardar.setLayout(null);
@@ -316,6 +338,12 @@ public class RegistroHuesped extends JFrame {
 	}
 	
 	
+	protected void guardar() {
+		
+		this.huespedController.guardar(new Huesped(txtNombre.getText(), txtApellido.getText(), new java.sql.Date(txtFechaN.getDate().getTime()),txtNacionalidad.getSelectedItem().toString(), txtTelefono.getText(),Integer.valueOf(txtNreserva.getText())));
+
+	}
+
 	//Código que permite mover la ventana por la pantalla según la posición de "x" y "y"	
 	 private void headerMousePressed(java.awt.event.MouseEvent evt) {
 	        xMouse = evt.getX();
