@@ -1,5 +1,7 @@
 package conection.controller;
 
+import java.util.List;
+
 import conection.dao.HuespedDao;
 import conection.factory.ConnectionFactory;
 import conection.modelos.Huesped;
@@ -14,6 +16,10 @@ public class HuespedController {
 	public void guardar(Huesped huesped) {
 		huespedDao.guardar(huesped);
 		
+	}
+
+	public List<Huesped> listar() {
+		return huespedDao.listar();
 	}
 
 }

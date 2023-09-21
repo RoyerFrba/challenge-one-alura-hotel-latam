@@ -6,7 +6,7 @@ import java.util.List;
 
 
 public class Huesped {
-	private Integer id;
+	private Long id;
 	private String nombre;
 	private String apellido;
 	private Date fechadeNacimiento;
@@ -37,15 +37,28 @@ public class Huesped {
 		this.idReserva = idReserva;
 	}
 
+
+
+	public Huesped(Long id, String nombre, String apellido, Date fechadeNacimiento, String nacionalidad,
+			String telefono, Integer idReserva) {
+		this.id = id;
+		this.nombre = nombre;
+		this.apellido = apellido;
+		this.fechadeNacimiento = fechadeNacimiento;
+		this.nacionalidad = nacionalidad;
+		this.telefono = telefono;
+		this.idReserva = idReserva;
+	}
+
 	public void addReserva(Reserva reserva) {
 		this.reserva.add(reserva);
 	}
 	
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

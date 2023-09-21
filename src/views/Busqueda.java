@@ -6,6 +6,10 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
+
+import conection.controller.HuespedController;
+import conection.controller.ReservaController;
+
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.JButton;
@@ -37,6 +41,8 @@ public class Busqueda extends JFrame {
 	private DefaultTableModel modeloHuesped;
 	private JLabel labelAtras;
 	private JLabel labelExit;
+	private ReservaController reservaController;
+	private HuespedController huespedController;
 	int xMouse, yMouse;
 
 	/**
@@ -59,6 +65,9 @@ public class Busqueda extends JFrame {
 	 * Create the frame.
 	 */
 	public Busqueda() {
+		reservaController=new ReservaController();
+		huespedController=new HuespedController();
+		
 		setIconImage(Toolkit.getDefaultToolkit().getImage(Busqueda.class.getResource("/imagenes/lupa2.png")));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 910, 571);
@@ -119,7 +128,7 @@ public class Busqueda extends JFrame {
 		modeloHuesped.addColumn("Número de Reserva");
 		JScrollPane scroll_tableHuespedes = new JScrollPane(tbHuespedes);
 		panel.addTab("Huéspedes", new ImageIcon(Busqueda.class.getResource("/imagenes/pessoas.png")), scroll_tableHuespedes, null);
-		scroll_tableHuespedes.setVisible(true);
+		scroll_tableHuespedes.setVisible(false);
 		
 		JLabel lblNewLabel_2 = new JLabel("");
 		lblNewLabel_2.setIcon(new ImageIcon(Busqueda.class.getResource("/imagenes/Ha-100px.png")));
@@ -216,7 +225,16 @@ public class Busqueda extends JFrame {
 		btnbuscar.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-
+				if(scroll_tableHuespedes.isVisible()) 
+				{
+					limpiarTablaHuesped();
+					cargarTablaHuespedes();
+				}
+				if(scroll_table.isVisible()) 
+				{
+					limpiarTablaReserva();
+					cargarTablaReservas();					
+				}
 			}
 		});
 		btnbuscar.setLayout(null);
@@ -261,11 +279,48 @@ public class Busqueda extends JFrame {
 		btnEliminar.add(lblEliminar);
 		setResizable(false);
 	}
+	  private void cargarTablaReservas() {
+			var reservas = this.reservaController.listar();
+
+		
+          // TODO
+			//Iteramos la lista y devolvemos los values de los maps
+			//productos.forEach(producto -> modelo.addRow(new Object[] { producto.get("ID"), producto.get("Nombre_Articulo"),producto.get("Cantidad") }));
+			reservas.forEach(reserva-> modelo.addRow(new Object[] { 
+					reserva.getId(),
+					reserva.getFechaEntrada(),
+					reserva.getFechaSalida(),
+					reserva.getValor(),
+					reserva.getFormaDePago()}));       
+	  }
+	
+	  private void cargarTablaHuespedes() {
+			var huespedes = this.huespedController.listar();
+
+		
+        // TODO
+			//Iteramos la lista y devolvemos los values de los maps
+			//productos.forEach(producto -> modelo.addRow(new Object[] { producto.get("ID"), producto.get("Nombre_Articulo"),producto.get("Cantidad") }));
+			huespedes.forEach(huesped-> modeloHuesped.addRow(new Object[] { 
+					huesped.getId(),
+					huesped.getNombre(),
+					huesped.getApellido(),
+					huesped.getFechadeNacimiento(),
+					huesped.getNacionalidad(),
+					huesped.getTelefono(),
+					huesped.getIdReserva()	}));       
+	  }
 	
 //Código que permite mover la ventana por la pantalla según la posición de "x" y "y"
 	 private void headerMousePressed(java.awt.event.MouseEvent evt) {
 	        xMouse = evt.getX();
 	        yMouse = evt.getY();
+	    }
+	 private void limpiarTablaReserva() {
+	        modelo.getDataVector().clear();
+	    }
+	 private void limpiarTablaHuesped() {
+	        modeloHuesped.getDataVector().clear();
 	    }
 
 	    private void headerMouseDragged(java.awt.event.MouseEvent evt) {
@@ -273,4 +328,5 @@ public class Busqueda extends JFrame {
 	        int y = evt.getYOnScreen();
 	        this.setLocation(x - xMouse, y - yMouse);
 }
+
 }

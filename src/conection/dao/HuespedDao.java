@@ -6,8 +6,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 import conection.modelos.Huesped;
+import conection.modelos.Reserva;
 
 public class HuespedDao {
 	
@@ -45,14 +48,36 @@ public class HuespedDao {
     	st.executeUpdate();
     	final ResultSet resultSet = st.getGeneratedKeys();
     	try(resultSet){
-	    	while(resultSet.next()) 
-	    	{	
-	    		huesped.setId( resultSet.getInt(1));
-	    		System.out.println(String.format("Fue insertado el producto de %s",huesped));
-	    	}
+	  
 	    }
 	
 	
 	
+	}
+
+	public List<Huesped> listar() {
+		List<Huesped>res=new ArrayList<>();
+		try {
+
+					final PreparedStatement st = con.prepareStatement("SELECT * FROM huespedes");
+					try(st){
+						st.execute();
+						final ResultSet resulSet=st.getResultSet();
+						try(resulSet){
+
+							while(resulSet.next()) 
+							{
+								Huesped huesped=new Huesped(resulSet.getLong(1), resulSet.getString(2),resulSet.getString(3),resulSet.getDate(4),resulSet.getString(5),resulSet.getString(6),resulSet.getInt(7));
+								
+								
+								res.add(huesped);
+							}
+								return res;
+						}
+					}
+				
+			} catch (SQLException e) {
+				throw new RuntimeException();
+		}
 	}
 }

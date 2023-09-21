@@ -17,6 +17,15 @@ public class Reserva {
 		this.valor = valor;
 		this.formaDePago = formaDePago;
 	}
+	
+	public Reserva(Long id, Date fechaEntrada, Date fechaSalida, Double valor, String formaDePago) {
+		this.id = id;
+		this.fechaEntrada = fechaEntrada;
+		this.fechaSalida = fechaSalida;
+		this.valor = valor;
+		this.formaDePago = formaDePago;
+	}
+
 	public Long getId() {
 		return id;
 	}
